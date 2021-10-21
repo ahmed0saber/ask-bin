@@ -42,13 +42,52 @@ menuBtn.addEventListener('click', () => {
 });
 
 
-var questionNumber=2;
+var questionNumber=2 , values=[];
+var elements = document.getElementsByClassName('txt');
 function addQuestion(){
-    if(questionNumber<=10){
-        document.getElementById("questionsContainer").innerHTML+=`<p class="questioned">Enter question number ${questionNumber}</p>
-        <input type="text" name="q${questionNumber}" placeholder="Question ${questionNumber}" class="txt">`;
-        questionNumber++;
-    }else{
-        alert("Max number of questions reached");
+    for (var i in elements) {
+        if(questionNumber>i){
+            if(elements[i].value==''){
+                values[i]="";
+            }else{
+                values[i]=elements[i].value;
+            }
+        }
+    }
+
+    document.getElementById("questionsContainer").innerHTML+=`<p class="questioned">Enter question number ${questionNumber}</p>
+    <input type="text" name="q${questionNumber}" placeholder="Question ${questionNumber}" class="txt" required>`;
+    questionNumber++;
+
+    for (var i in elements) {
+        elements[i].value=values[i];
+        if(questionNumber>=i){
+            if(elements[i].value=="undefined"){
+                elements[i].value="";
+            }
+        }
     }
 }
+
+
+function sbmt() {
+    document.getElementById("qsnum").value=questionNumber-1;
+    
+    document.getElementById("qstxt").value="";
+    for (var i in elements) {
+        if(questionNumber>i){
+            if(elements[i].value==''){
+                values[i]="";
+            }else{
+                values[i]=elements[i].value;
+            }
+        }
+    }
+    for(var i=1;i<values.length;i++){
+        document.getElementById("qstxt").value+='('+i+')'+' '+values[i]+'\r\n';
+    }
+    console.log(document.getElementById("qstxt").value);
+    
+
+    document.getElementById("sbmtbtn").click();
+  }

@@ -1,3 +1,11 @@
+<?php
+include 'config.php';
+error_reporting(0);
+session_start();
+if (!isset($_SESSION['username'])) { //if user went here without login
+    header("Location: login.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,13 +33,38 @@
             </button>
         </section>
     </header>
-    <p class="quizName">Quiz 1</p>
-    <section class="questions">
-        <p class="qa">Questions</p>
-        <p class="question">(1) What is your name ?</p>
-        <p class="question">(2) What is your age ?</p>
-        <p class="question">(3) What is your favorite color ?</p>
-    </section><hr>
+
+    <?php
+        if (isset($_GET['name'])) {
+            $formname = $_GET['name'];
+
+            $servername = "mysql:host=localhost;dbname=ask-bin";
+            $username = "root";
+            $password = "";
+            $conn = new PDO($servername,$username,$password);
+            // set the PDO error mode to exception
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $owner = $_SESSION['username'];
+            $sql = "SELECT * FROM forms WHERE owner='$owner' AND formname='$formname'";  
+            $result = $conn->query($sql);
+            if($result->rowCount() > 0){
+                while($row = $result->fetch()){
+                    echo '<p class="quizName">'.$row['formname'].'</p>';
+                    echo '<section class="questions">
+                    <p class="qa">Questions</p>';
+                    echo '<pre class="question">'.$row['questions'].'</pre>';
+                    echo '</section><hr>';
+                }
+                // Free result set
+                unset($result);
+            }
+
+        } else {
+            header("Location: myQuizzes.php");
+        }
+    ?>
+
     <p class="qa qa2">Answers</p>
     <section class="answers">
         <div class="answer">

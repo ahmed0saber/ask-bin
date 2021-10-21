@@ -1,3 +1,39 @@
+<?php
+include 'config.php';
+error_reporting(0);
+session_start();
+
+if (isset($_POST['submit'])) {
+	$qName = $_POST['quizName'];
+	$qQues = $_POST['questions'];
+	$qNum = $_POST['number'];
+    $owner = $_SESSION['username'];
+
+    $sql = "SELECT * FROM users WHERE email='$email'";
+    $result = mysqli_query($conn, $sql);
+    if (!$result->num_rows > 0) {
+        $sql = "INSERT INTO forms (owner, formname, numberofquestions, questions)
+                VALUES ('$owner', '$qName', '$qNum', '$qQues')"; //add a row to the table
+        $result = mysqli_query($conn, $sql);
+        if ($result) {
+            echo "<script>alert('Wow! Form Registration Completed.')</script>";
+            $_SESSION['formname'] = $qName;
+            header("Location: myQuizzes.php");
+            $qName = '';
+            $qQues = '';
+            $qNum = '';
+            
+        } else {
+            echo "<script>alert('Woops! Something Wrong Went.')</script>";
+        }
+    }
+}
+
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,15 +63,18 @@
     </header><br>
     <section class="formCon">
         <section class="form">
-            <form> <!-- action and method -->
+            <form action="" method="POST">
                 <div id="questionsContainer">
                     <p class="questioned">Enter the form name</p>
-                    <input type="text" name="quizName" placeholder="Form Name" class="txt">
+                    <input type="text" name="quizName" placeholder="Form Name" class="txt" required>
+                    <input type="hidden" name="questions" id="qstxt">
+                    <input type="hidden" name="number" id="qsnum">
                     <p class="questioned">Enter question number 1</p>
-                    <input type="text" name="q1" placeholder="Question 1" class="txt">
+                    <input type="text" name="q1" placeholder="Question 1" class="txt" required>
                 </div>
-                <input type="button" value="Add Question" class="btn" onclick="addQuestion()">
-                <input type="button" value="Submit" class="btn">
+                <button type="button" class="btn" onclick="addQuestion()">Add Question</button>
+                <button type="button" class="btn" onclick="sbmt()">Submit</button>
+                <button name="submit" id="sbmtbtn" hidden>Submit</button>
             </form>
         </section>
     </section>

@@ -1,4 +1,6 @@
-<?php 
+<?php
+include 'config.php';
+error_reporting(0);
 session_start();
 if (!isset($_SESSION['username'])) { //if user went here without login
     header("Location: login.php");
@@ -45,39 +47,33 @@ if (!isset($_SESSION['username'])) { //if user went here without login
 
         <section class="quiz" onclick="window.open('createQuiz.php','_self')">
             <p class="quizL">New</p>
-            <p class="quizR">max 10 questions</p>
+            <p class="quizR">???</p>
             <a href="createQuiz.php" class="link">Create</a>
         </section>
 
-        <section class="quiz" onclick="window.open('viewQuiz.php','_self')">
-            <p class="quizL">Quiz 5</p>
-            <p class="quizR">5 questions</p>
-            <a href="viewQuiz.php" class="link">View</a>
-        </section>
+        <?php
+        $servername = "mysql:host=localhost;dbname=ask-bin";
+        $username = "root";
+        $password = "";
+        $conn = new PDO($servername,$username,$password);
+        // set the PDO error mode to exception
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        <section class="quiz" onclick="window.open('viewQuiz.php','_self')">
-            <p class="quizL">Quiz 4</p>
-            <p class="quizR">7 questions</p>
-            <a href="viewQuiz.php" class="link">View</a>
-        </section>
-
-        <section class="quiz" onclick="window.open('viewQuiz.php','_self')">
-            <p class="quizL">Quiz 3</p>
-            <p class="quizR">3 questions</p>
-            <a href="viewQuiz.php" class="link">View</a>
-        </section>
-
-        <section class="quiz" onclick="window.open('viewQuiz.php','_self')">
-            <p class="quizL">Quiz 2</p>
-            <p class="quizR">10 questions</p>
-            <a href="viewQuiz.php" class="link">View</a>
-        </section>
-
-        <section class="quiz" onclick="window.open('viewQuiz.php','_self')">
-            <p class="quizL">Quiz 1</p>
-            <p class="quizR">4 questions</p>
-            <a href="viewQuiz.php" class="link">View</a>
-        </section>
+        $owner = $_SESSION['username'];
+        $sql = "SELECT * FROM forms WHERE owner='$owner'";  
+        $result = $conn->query($sql);
+        if($result->rowCount() > 0){
+            while($row = $result->fetch()){
+                echo '<section class="quiz" onclick="window.open('."'viewQuiz.php?name=$row[formname]'".','."'_self'".')">';
+                echo '<p class="quizL">'.$row['formname'].'</p>';
+                echo '<p class="quizR">'.$row['numberofquestions'].' questions</p>';
+                echo '<a href='."'viewQuiz.php?name=$row[formname]'".' class="link">View</a>';
+                echo '</section>';
+            }
+            // Free result set
+            unset($result);
+        }
+        ?>
 
     </section>
     <br>
