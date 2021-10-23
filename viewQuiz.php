@@ -6,6 +6,14 @@ if (!isset($_SESSION['username'])) { //if user went here without login
     header("Location: login.php");
 }
 ?>
+
+<?php
+if ($_GET['shared']=="yes") {
+    $form = $_GET['name'];
+    $owner = $_GET['owner'];
+    header("Location: quizInv.php"."?form=".$form."&owner=".$owner);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,46 +62,33 @@ if (!isset($_SESSION['username'])) { //if user went here without login
                     echo '<section class="questions">
                     <p class="qa">Questions</p>';
                     echo '<pre class="question">'.$row['questions'].'</pre>';
+                    echo '<button class="btn cta" onclick="copied();">Share</button>';
                     echo '</section><hr>';
                 }
                 // Free result set
                 unset($result);
             }
-
+            echo '<p class="qa qa2">Answers</p>
+            <section class="answers">';
+            $sql = "SELECT * FROM submits WHERE owner='$owner' AND formname='$formname'";  
+            $result = $conn->query($sql);
+            if($result->rowCount() > 0){
+                while($row = $result->fetch()){
+                    echo '<div class="answer">';
+                    echo '<pre class="answered">'.$row['answers'].'</pre>';
+                    echo '</div>';
+                }
+                // Free result set
+                unset($result);
+            }else{
+                echo '<p class="answered" style="text-align: center;">-No answers yet-';
+            }
+            echo '</section>';
+            echo '<p style="display:none;" id="urltxt">'.(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]&owner=".$owner."&shared=yes</p>";
         } else {
             header("Location: myQuizzes.php");
         }
     ?>
-
-    <p class="qa qa2">Answers</p>
-    <section class="answers">
-        <div class="answer">
-            <p class="answered">(1) Ahmed</p>
-            <p class="answered">(2) 20</p>
-            <p class="answered">(3) Blue</p>
-        </div>
-        <div class="answer">
-            <p class="answered">(1) Ali</p>
-            <p class="answered">(2) 19</p>
-            <p class="answered">(3) Purple</p>
-        </div>
-        <div class="answer">
-            <p class="answered">(1) Ashraf</p>
-            <p class="answered">(2) 20</p>
-            <p class="answered">(3) Red</p>
-        </div>
-        <div class="answer">
-            <p class="answered">(1) Mohammed</p>
-            <p class="answered">(2) 21</p>
-            <p class="answered">(3) Green</p>
-        </div>
-        <div class="answer">
-            <p class="answered">(1) Ebrahim</p>
-            <p class="answered">(2) 20</p>
-            <p class="answered">(3) Yellow</p>
-        </div>
-    </section>
-
     <script src="app.js"></script>
 </body>
 </html>

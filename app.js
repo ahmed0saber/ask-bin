@@ -44,6 +44,7 @@ menuBtn.addEventListener('click', () => {
 
 var questionNumber=2 , values=[];
 var elements = document.getElementsByClassName('txt');
+
 function addQuestion(){
     for (var i in elements) {
         if(questionNumber>i){
@@ -84,10 +85,39 @@ function sbmt() {
         }
     }
     for(var i=1;i<values.length;i++){
-        document.getElementById("qstxt").value+='('+i+')'+' '+values[i]+'\r\n';
+        values[i] = values[i].replace('?','');
+        document.getElementById("qstxt").value+='('+i+')'+' '+values[i]+' ?\r\n';
     }
     console.log(document.getElementById("qstxt").value);
     
 
     document.getElementById("sbmtbtn").click();
-  }
+}
+
+
+function copied(){
+    copyText=document.getElementById("urltxt");
+    navigator.clipboard.writeText(copyText.textContent);
+    alert("Copied the text: " + copyText.textContent);
+}
+
+
+function ansr() {
+    
+    document.getElementById("astxt").value="";
+    for (var i in elements) {
+        if(questionNumber>=i){
+            if(elements[i].value==''){
+                values[i]="";
+            }else{
+                values[i]=elements[i].value;
+            }
+        }
+    }
+    for(var i=0;i<values.length;i++){
+        document.getElementById("astxt").value+='('+(i+1)+')'+' '+values[i]+'\r\n';
+    }
+    console.log(document.getElementById("astxt").value);
+    
+    document.getElementById("ansrbtn").click();
+}

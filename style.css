@@ -295,6 +295,12 @@ button.cta:hover {
 .myH a{
     text-decoration: underline;
 }
+.questions .btn{
+    width: 100px;
+    height: 40px;
+    font-size: 16px;
+    margin: 10px 0px 5px calc(50% - 50px);
+}
 
 /*  -----    RESPONSIVENESS    -----  */
 @media (max-width:1080px) {
