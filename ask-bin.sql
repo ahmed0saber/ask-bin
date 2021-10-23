@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 22, 2021 at 01:50 AM
+-- Generation Time: Oct 23, 2021 at 04:34 PM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 8.0.7
 
@@ -41,9 +41,9 @@ CREATE TABLE `forms` (
 
 INSERT INTO `forms` (`id`, `owner`, `formname`, `numberofquestions`, `questions`) VALUES
 (8, 'ahmed0saber', 'test', 3, '(1) What is your name ?\r\n(2) What is your age ?\r\n(3) What is your fav color ?'),
-(11, 'ahmed0saber', 'form1', 3, '(1) First Name\r\n(2) Last Name\r\n(3) Phone Number\r\n'),
-(12, 'ahmed0saber', 'quiz', 4, '(1) what is your name ?\r\n(2) your job ?\r\n(3) what is your country ?\r\n(4) best wishes !\r\n'),
-(13, 'AhmedSaber', 'testing', 3, '(1) a\r\n(2) b\r\n(3) c\r\n');
+(11, 'ahmed0saber', 'form1', 3, '(1) First Name ?\r\n(2) Last Name ?\r\n(3) Phone Number ?\r\n'),
+(12, 'ahmed0saber', 'quiz', 4, '(1) what is your name ?\r\n(2) your job ?\r\n(3) what is your country ?\r\n(4) best wishes ?\r\n'),
+(14, 'ahmed0saber', 'course form', 2, '(1) First Name ?\r\n(2) Phone number ?\r\n');
 
 -- --------------------------------------------------------
 
@@ -57,6 +57,17 @@ CREATE TABLE `submits` (
   `formname` varchar(255) NOT NULL,
   `answers` varchar(2550) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `submits`
+--
+
+INSERT INTO `submits` (`id`, `owner`, `formname`, `answers`) VALUES
+(1, 'ahmed0saber', 'test', '(1) Ahmed\r\n(2) 20\r\n(3) Blue'),
+(2, 'ahmed0saber', 'test', '(1) Ali\r\n(2) 19\r\n(3) Purple'),
+(3, 'ahmed0saber', 'test', '(1) Ashraf\r\n(2) 21\r\n(3) Red'),
+(4, 'ahmed0saber', 'form1', '(1) Ahmed\r\n(2) Saber\r\n(3) +201208611892'),
+(5, 'ahmed0saber', 'test', '(1) ahmed\r\n(2) 22\r\n(3) teal\r\n');
 
 -- --------------------------------------------------------
 
@@ -109,13 +120,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `forms`
 --
 ALTER TABLE `forms`
-  MODIFY `id` smallint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` smallint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `submits`
 --
 ALTER TABLE `submits`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `users`
